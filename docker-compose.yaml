@@ -10,7 +10,7 @@ services:
         user: ticto
         uid: 1000
       context: ./
-      dockerfile: .docker/php8.1-fpm.dockerfile
+      dockerfile: .docker/php8.4-fpm.dockerfile
     image: ticto/app
     container_name: ticto-app
     restart: unless-stopped
@@ -20,6 +20,7 @@ services:
     command:
       sh -c "composer install --ignore-platform-reqs \
         && php artisan key:generate \
+        && php artisan migrate --force \
         && docker-php-entrypoint php-fpm"
     networks:
       - ticto
