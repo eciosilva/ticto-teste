@@ -1,0 +1,58 @@
+name: "ticto-teste"
+version: "3.7"
+
+services:
+  app:
+    depends_on:
+      - db
+    build:
+      args:
+        user: ticto
+        uid: 1000
+      context: ./
+      dockerfile: .docker/php8.1-fpm.dockerfile
+    image: ticto/app
+    container_name: ticto-app
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+    command:
+      sh -c "composer install --ignore-platform-reqs \
+        && php artisan key:generate \
+        && docker-php-entrypoint php-fpm"
+    networks:
+      - ticto
+  db:
+    image: mysql/mysql-server:8.0.23
+    container_name: ticto-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    ports:
+      - 3399:3306
+    volumes:
+      - .docker/mysql:/docker-entrypoint-initdb.d
+    networks:
+      - ticto
+  nginx:
+    image: nginx:1.17-alpine
+    container_name: ticto-nginx
+    restart: unless-stopped
+    ports:
+      - 8099:80
+    volumes:
+      - ./:/var/www
+      - .docker/nginx:/etc/nginx/conf.d
+    networks:
+      - ticto
+
+networks:
+  ticto:
+    driver: bridge
+    external: false
