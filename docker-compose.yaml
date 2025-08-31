@@ -21,6 +21,8 @@ services:
       sh -c "composer install --ignore-platform-reqs \
         && php artisan key:generate \
         && php artisan migrate --force \
+        && npm install \
+        && npm run build \
         && docker-php-entrypoint php-fpm"
     networks:
       - ticto

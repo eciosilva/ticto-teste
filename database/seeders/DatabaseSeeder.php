@@ -13,11 +13,29 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
+        // Cria um perfil de administrador
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Admin',
+            'cpf' => '12345678900',
+            'email' => 'admin@ticto.com.br',
+            'password' => bcrypt('12345678'),
+            'position' => 'Admin',
+            'birth_date' => '2000-01-01',
+            'cep' => '12345678',
+            'address' => 'Admin Street, 123',
+        ]);
+
+        // Cria um perfil de funcionário
+        User::factory()->create([
+            'name' => 'Empregado',
+            'cpf' => '98765432100',
+            'email' => 'employee@ticto.com.br',
+            'password' => bcrypt('12345678'),
+            'position' => 'Empregado',
+            'birth_date' => '1990-01-01',
+            'cep' => '87654321',
+            'address' => 'Employee Street, 456',
+            'manager_id' => 1, // Referencia o administrador como gerente
         ]);
     }
 }
