@@ -29,7 +29,7 @@ class UpdateUserRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $userId,
             'password' => 'sometimes|nullable|string|min:6',
-            'cpf' => 'required|string|min:11|max:11|unique:users,cpf,' . $userId,
+            'cpf' => 'required|string|cpf|unique:users,cpf,' . $userId,
             'cep' => 'required|string|min:8|max:8',
             'birth_date' => 'required|date_format:d/m/Y',
         ];

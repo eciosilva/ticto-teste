@@ -27,7 +27,7 @@ class StoreUserRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6',
-            'cpf' => 'required|string|min:11|max:11|unique:users,cpf',
+            'cpf' => 'required|string|cpf|unique:users,cpf',
             'cep' => 'required|string|min:8|max:8',
             'birth_date' => 'required|date_format:d/m/Y',
         ];
