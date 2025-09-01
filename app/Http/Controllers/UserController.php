@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Http as HttpClient;
 use Illuminate\Http\Request;
@@ -32,7 +33,7 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new post.
+     * Show the form for creating a new user.
      *
      * @return \Illuminate\View\View
      */
@@ -65,27 +66,38 @@ class UserController extends Controller
     }
 
     /**
+     * Show the form for editing a new user.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function edit($id)
+    {
+        $user = User::findOrFail($id);
+        $user->birth_date = \Carbon\Carbon::createFromFormat('Y-m-d', $user->birth_date)->format('d/m/Y');
+        return view('users.edit', compact('user'));
+    }
+
+    /**
      * Update an existing user
      *
      * @return \Illuminate\View\View
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, $id)
     {
         $user = User::findOrFail($id);
-
-        $validated = $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'email' => 'sometimes|required|email|unique:users,email,' . $id,
-            'password' => 'sometimes|required|string|min:6',
-        ]);
-
-        if (isset($validated['password'])) {
-            $validated['password'] = bcrypt($validated['password']);
+        $validated = $request->validated();
+        $validated['birth_date'] = \Carbon\Carbon::createFromFormat('d/m/Y', $validated['birth_date'])->format('Y-m-d');
+        if (null === $validated['password']) {
+            unset($validated['password']);
         }
-
+        
+        // Recupera o endereço através da API externa
+        $endereco = HttpClient::get(sprintf('https://viacep.com.br/ws/%s/json/', $validated['cep']));
+        $validated['address'] = $endereco->json()['logradouro'] ?? '';
+        
         $user->update($validated);
 
-        return response()->json($user);
+        return redirect()->route('users.index')->with('success', 'Funcionário atualizado com sucesso.');
     }
 
     /**
