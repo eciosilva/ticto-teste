@@ -20,6 +20,9 @@
                     <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')">
                         {{ __('Funcionários') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('timesheet.report')" :active="request()->routeIs('timesheet.report')">
+                        {{ __('Relatório de Ponto') }}
+                    </x-nav-link>
                     @endif
                     
                 </div>

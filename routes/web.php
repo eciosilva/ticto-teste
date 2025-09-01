@@ -20,6 +20,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('timesheet/{id}/time-sheet', [UserTimeSheetController::class, 'timeSheet'])->name('users.time_sheet');
     Route::get('timesheet/register-clock-in', [UserTimeSheetController::class, 'registerClockIn'])->name('users.register_clock_in');
+    Route::get('timesheet/report', [UserTimeSheetController::class, 'report'])->name('timesheet.report');
 });
 
 require __DIR__.'/auth.php';

@@ -14,4 +14,8 @@ class UserTimeSheet extends Model
         'start_time',
         'end_time'
     ];
+
+    protected $casts = [
+        'work_date' => 'date'
+    ];
 }

@@ -43,8 +43,11 @@
                                                     <span class="_cep">{{ $user->cep }}</span> - {{ $user->address }}
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap">
-                                                    <a href="{{ route('users.edit', $user->id) }}" 
+                                                    <a href="{{ route('users.time_sheet', $user->id) }}" 
                                                         class="text-blue-600 hover:text-blue-900"
+                                                        ><i class="bi bi-clock"></i></a>
+                                                    <a href="{{ route('users.edit', $user->id) }}" 
+                                                        class="text-blue-600 hover:text-blue-900 ml-4"
                                                         ><i class="bi bi-pencil-square"></i></a>
                                                     <a href="javascript:void(0);" onclick="deleteUser({{ $user->id }})"
                                                         class="text-red-600 hover:text-red-900 ml-4"
