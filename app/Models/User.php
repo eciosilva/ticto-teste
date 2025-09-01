@@ -59,4 +59,15 @@ class User extends Authenticatable
     {
         return $this->position === User::POSITION_ADMIN;
     }
+
+    public function timesheets()
+    {
+        return $this->hasMany(UserTimeSheet::class);
+    }
+
+    protected static function booted () {
+        static::deleting(function(User $user) { // apaga os registros de folhas-de-ponto
+             $user->timesheets()->delete();
+        });
+    }
 }

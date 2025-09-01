@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserTimeSheetController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -16,6 +17,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () { return view('dashboard'); })->name('dashboard');
 
     Route::resource('users', UserController::class);
+
+    Route::get('timesheet/{id}/time-sheet', [UserTimeSheetController::class, 'timeSheet'])->name('users.time_sheet');
+    Route::get('timesheet/register-clock-in', [UserTimeSheetController::class, 'registerClockIn'])->name('users.register_clock_in');
 });
 
 require __DIR__.'/auth.php';
