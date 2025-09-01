@@ -12,6 +12,9 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+    const POSITION_EMPLOYEE = 'Empregado';
+    const POSITION_ADMIN = 'Admin';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -21,6 +24,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'cpf',
+        'cep',
+        'address',
+        'birth_date',
+        'position',
+        'manager_id'
     ];
 
     /**
@@ -44,5 +53,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->position === User::POSITION_ADMIN;
     }
 }
